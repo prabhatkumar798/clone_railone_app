@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>RailOne UTS Clone</title>
+  
+  <!-- Font Awesome & Google Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@700&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- MOBILE DEVICE FRAME WRAPPER START -->
+  <div class="mobile-wrapper" id="appRoot">
+
+    <!-- ==============================================
+         SCREEN 1: HOME SCREEN
+         ============================================== -->
+    <section class="screen active" id="screen-home">
+      <div class="header-railone">
+        <div class="lang-pill"><span class="lang-en">A</span><span class="lang-hi">अ</span></div>
+        <h1 class="logo-text">RailOne</h1>
+        <div class="notif-box">
+          <i class="fa-regular fa-bell"></i>
+          <span class="notif-bubble">15</span>
+        </div>
+      </div>
+
+      <div class="user-greeting-row">
+        <span>Hi, <b id="displayGreetingName">PRABHAT KUMAR SAW</b>!</span>
+      </div>
+
+      <div class="scroll-content">
+        <!-- Journey Planner -->
+        <div class="section-title">Journey Planner</div>
+        <div class="planner-grid">
+          <div class="planner-card active-card" onclick="navigateTo('screen-reserved-search')">
+            <div class="planner-img-box reserved-bg">
+              <i class="fa-solid fa-couch"></i>
+            </div>
+            <span>Reserved</span>
+          </div>
+          <div class="planner-card active-card" onclick="navigateTo('screen-unreserved-search')">
+            <div class="planner-img-box unreserved-bg">
+              <i class="fa-solid fa-train-subway"></i>
+            </div>
+            <span>Unreserved</span>
+          </div>
+          <div class="planner-card active-card" onclick="navigateTo('screen-platform-booking')">
+            <div class="planner-img-box platform-bg">
+              <i class="fa-solid fa-ticket"></i>
+            </div>
+            <span>Platform</span>
+          </div>
+        </div>
+
+        <!-- Offerings Grid -->
+        <div class="section-title">More Offerings</div>
+        <div class="offerings-grid">
+          <div class="offer-tile bg-soft-pink"><i class="fa-solid fa-route"></i><span>Search Trains</span></div>
+          <div class="offer-tile bg-soft-green"><i class="fa-solid fa-receipt"></i><span>PNR Status</span></div>
+          <div class="offer-tile bg-soft-cyan"><i class="fa-solid fa-train"></i><span>Coach Position</span></div>
+          <div class="offer-tile bg-soft-yellow"><i class="fa-solid fa-location-crosshairs"></i><span>Track Your Train</span></div>
+          <div class="offer-tile bg-soft-lavender"><i class="fa-solid fa-utensils"></i><span>Order Food</span></div>
+          <div class="offer-tile bg-soft-grey"><i class="fa-solid fa-hand-holding-dollar"></i><span>File Refund</span></div>
+          <div class="offer-tile bg-soft-red"><i class="fa-solid fa-hands-holding-child"></i><span>Rail Madad</span></div>
+          <div class="offer-tile bg-soft-slate"><i class="fa-solid fa-shield-halved"></i><span>Go To WAVES</span></div>
+        </div>
+
+        <!-- Upcoming Journey Widget -->
+        <div class="section-title">Upcoming Journey</div>
+        <div id="homeUpcomingContainer"></div>
+      </div>
+    </section>
+
+    <!-- ==============================================
+         SCREEN 2: RESERVED TICKET SEARCH
+         ============================================== -->
+    <section class="screen" id="screen-reserved-search">
+      <div class="app-top-header">
+        <div class="header-col">
+          <h2>Reserved Ticket</h2>
+          <small class="text-irctc"><i class="fa-solid fa-train"></i> Powered by IRCTC</small>
+        </div>
+        <button class="icon-circle-btn" onclick="navigateTo('screen-home')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="scroll-content">
+        <div class="pref-banner-card">
+          <strong>Search Using Saved Preferences</strong>
+          <small>(Source, Destination, Class and Quota)</small>
+        </div>
+
+        <div class="text-center-or">• OR •</div>
+
+        <div class="stations-input-card">
+          <div class="station-field-row">
+            <div class="field-info">
+              <span class="label-tiny">From</span>
+              <div class="input-with-icon">
+                <i class="fa-solid fa-train-subway"></i>
+                <input type="text" id="inputResSource" value="CSMT - C SHIVAJI MAH T">
+              </div>
+            </div>
+            <button class="swap-stations-btn" onclick="swapResStations()"><i class="fa-solid fa-arrow-down-up-across-line"></i></button>
+          </div>
+          <div class="divider-line"></div>
+          <div class="station-field-row">
+            <div class="field-info">
+              <span class="label-tiny">To</span>
+              <div class="input-with-icon">
+                <i class="fa-solid fa-train"></i>
+                <input type="text" id="inputResDest" value="KQR - KODERMA JN">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Departure Date Section -->
+        <div class="cyan-section-label">Departure Date</div>
+        <div class="date-scroll-row">
+          <button class="date-pill active" onclick="selectResDate(this, 'Mon, 19 Oct')"><i class="fa-regular fa-calendar"></i> Mon, 19 Oct</button>
+          <button class="date-pill" onclick="selectResDate(this, '20 Oct')">20 Oct</button>
+          <button class="date-pill" onclick="selectResDate(this, '21 Oct')">21 Oct</button>
+          <button class="date-pill" onclick="selectResDate(this, '22 Oct')">22 Oct</button>
+        </div>
+
+        <!-- Class Selection -->
+        <div class="section-sub-label">Class</div>
+        <div class="pills-scroll-row">
+          <button class="filter-pill active" onclick="selectResClass(this, 'All')">All</button>
+          <button class="filter-pill" onclick="selectResClass(this, '2S')">2S</button>
+          <button class="filter-pill" onclick="selectResClass(this, 'VS')">VS</button>
+          <button class="filter-pill" onclick="selectResClass(this, 'SL')">SL</button>
+          <button class="filter-pill" onclick="selectResClass(this, 'CC')">CC</button>
+          <button class="filter-pill" onclick="selectResClass(this, '3A')">3A</button>
+        </div>
+
+        <!-- Quota Selection -->
+        <div class="section-sub-label">Quota</div>
+        <div class="select-dropdown-box">
+          <select id="resQuotaSelect">
+            <option value="General">General</option>
+            <option value="Tatkal">Tatkal</option>
+            <option value="Ladies">Ladies</option>
+            <option value="Lower Berth/Sr. Citizen">Lower Berth/Sr. Citizen</option>
+          </select>
+          <i class="fa-solid fa-chevron-down select-arrow"></i>
+        </div>
+
+        <button class="btn-primary-blue mt-4" onclick="proceedToReservedBooking()">Search</button>
+        <button class="btn-outline-blue text-sm" onclick="navigateTo('screen-bookings')"><i class="fa-solid fa-clock-rotate-left"></i> Check Last Transaction</button>
+
+        <div class="section-title mt-4">Favourite Journey <span class="view-all-link">View All</span></div>
+        <div class="fav-journey-card" onclick="applyFavJourney()">
+          <div class="fav-route-head">
+            <strong>KQR</strong>
+            <i class="fa-solid fa-arrow-right-long"></i>
+            <strong>CSMT</strong>
+          </div>
+          <div class="fav-route-meta">
+            <span>Train No. 12321</span>
+            <span class="bar">|</span>
+            <span>Quota GN</span>
+            <span class="bar">|</span>
+            <span>Class SL</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================================
+         SCREEN 3: UNRESERVED SEARCH
+         ============================================== -->
+    <section class="screen" id="screen-unreserved-search">
+      <div class="app-top-header">
+        <h2>Unreserved E-Ticket</h2>
+        <button class="icon-circle-btn" onclick="navigateTo('screen-home')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="scroll-content">
+        <div class="dual-toggle-bar">
+          <button class="toggle-btn active" id="tabNormal" onclick="toggleSearchTab('normal')">Normal</button>
+          <button class="toggle-btn" id="tabSeason" onclick="toggleSearchTab('season')">Season</button>
+        </div>
+
+        <div class="segmented-sub-toggle" id="normalToggleRow">
+          <button class="seg-btn active">Outside Station <i class="fa-solid fa-circle-info"></i></button>
+          <button class="seg-btn">At Station <i class="fa-solid fa-circle-info"></i></button>
+        </div>
+
+        <div class="season-options-panel" id="seasonSubPanel" style="display: none;">
+          <div class="pill-pair">
+            <span class="pair-lbl">Type</span>
+            <div class="sub-pill active">ISSUE</div>
+            <div class="sub-pill">RENEW</div>
+          </div>
+          <div class="pill-pair">
+            <span class="pair-lbl">Booking For</span>
+            <div class="sub-pill active">Self</div>
+            <div class="sub-pill">Others</div>
+          </div>
+        </div>
+
+        <div class="stations-input-card">
+          <div class="station-field-row">
+            <div class="field-info">
+              <span class="label-tiny">From</span>
+              <div class="input-with-icon">
+                <i class="fa-solid fa-train-tram"></i>
+                <input type="text" id="inputSourceStation" value="KHARGHAR (KHAG)">
+              </div>
+            </div>
+            <button class="swap-stations-btn" onclick="swapStations()"><i class="fa-solid fa-arrow-down-up-across-line"></i></button>
+          </div>
+          <div class="divider-line"></div>
+          <div class="station-field-row">
+            <div class="field-info">
+              <span class="label-tiny">To</span>
+              <div class="input-with-icon">
+                <i class="fa-solid fa-train"></i>
+                <input type="text" id="inputDestStation" value="C SHIVAJI MAH T (CSMT)">
+              </div>
+            </div>
+            <i class="fa-solid fa-qrcode qr-field-icon"></i>
+          </div>
+        </div>
+
+        <button class="btn-primary-blue" onclick="goToPassengerDetails()">Proceed To Book</button>
+        <button class="btn-outline-blue">Check Upcoming Trains</button>
+
+        <div class="section-title mt-4">Recent Searches</div>
+        <div class="recent-scroll-row">
+          <div class="recent-chip" onclick="applyRecent('KHARGHAR (KHAG)', 'C SHIVAJI MAH T (CSMT)')">
+            <strong>KHARGHAR, KHAG</strong>
+            <i class="fa-solid fa-arrows-left-right"></i>
+            <span>CSMT, MUMBAI</span>
+          </div>
+          <div class="recent-chip" onclick="applyRecent('KHARGHAR (KHAG)', 'BELAPUR C.B.D')">
+            <strong>KHARGHAR, KHAG</strong>
+            <i class="fa-solid fa-arrows-left-right"></i>
+            <span>BELAPUR C.B.D</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================================
+         SCREEN 4: PLATFORM TICKET BOOKING
+         ============================================== -->
+    <section class="screen" id="screen-platform-booking">
+      <div class="app-top-header">
+        <h2>Platform E-Ticket</h2>
+        <button class="icon-circle-btn" onclick="navigateTo('screen-home')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="scroll-content">
+        <div class="segmented-sub-toggle">
+          <button class="seg-btn">Outside Station <i class="fa-solid fa-circle-info"></i></button>
+          <button class="seg-btn active">At Station <i class="fa-solid fa-circle-info"></i></button>
+        </div>
+
+        <div class="stations-input-card">
+          <span class="label-tiny">Station</span>
+          <div class="station-field-row mt-2">
+            <div class="input-with-icon flex-1">
+              <i class="fa-solid fa-train-subway"></i>
+              <input type="text" id="inputPlatformStation" value="C SHIVAJI MAH T (CSMT)">
+            </div>
+            <i class="fa-solid fa-qrcode qr-field-icon"></i>
+          </div>
+        </div>
+
+        <div class="stepper-card">
+          <span class="stepper-title">Number of Person(s)</span>
+          <div class="stepper-control">
+            <button class="step-btn minus" onclick="changePlatformPersons(-1)"><i class="fa-solid fa-minus"></i></button>
+            <span class="step-value" id="platformPersonCount">1</span>
+            <button class="step-btn plus" onclick="changePlatformPersons(1)"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </div>
+
+        <div class="platform-fare-summary mt-4">
+          <div class="fare-tag"><i class="fa-solid fa-ticket-simple"></i> <span>Total Fare</span></div>
+          <div class="currency-amt" id="platformFareDisplay">₹ 10.0</div>
+        </div>
+
+        <button class="btn-primary-blue mt-4" id="btnPlatformPay" onclick="proceedPlatformPayment()">Pay ₹ 10.0</button>
+      </div>
+    </section>
+
+    <!-- ==============================================
+         SCREEN 5: UNRESERVED JOURNEY DETAILS
+         ============================================== -->
+    <section class="screen" id="screen-passenger-details">
+      <div class="app-top-header blue-bg">
+        <button class="icon-circle-btn ghost" onclick="navigateTo('screen-unreserved-search')"><i class="fa-solid fa-arrow-left"></i></button>
+        <div class="header-col">
+          <h2>Unreserved Journey</h2>
+          <small>E-Ticket</small>
+        </div>
+      </div>
+
+      <div class="scroll-content">
+        <div class="route-strip">
+          <div class="station-side">
+            <h4 id="passScreenSource">KHARGHAR</h4>
+            <span>KHAG</span>
+          </div>
+          <i class="fa-solid fa-arrow-right-long route-arrow"></i>
+          <div class="station-side text-right">
+            <h4 id="passScreenDest">C SHIVAJI MAH T</h4>
+            <span>CSMT</span>
+          </div>
+        </div>
+
+        <div class="form-group-label">Train Type</div>
+        <div class="toggle-group-row">
+          <button class="pill-select-btn active" id="trainOrdinary" onclick="setTrainType('ORDINARY')">ORDINARY</button>
+          <button class="pill-select-btn" id="trainAc" onclick="setTrainType('AC EMU TRAIN')">AC EMU TRAIN</button>
+        </div>
+
+        <div class="form-group-label">Ticket Type</div>
+        <div class="toggle-group-row">
+          <button class="pill-select-btn active" id="ticketJourney" onclick="setTicketType('JOURNEY')">JOURNEY</button>
+          <button class="pill-select-btn" id="ticketReturn" onclick="setTicketType('RETURN')">RETURN</button>
+        </div>
+
+        <div class="stepper-card">
+          <span class="stepper-title">Adult</span>
+          <div class="stepper-control">
+            <button class="step-btn minus" onclick="changeCount('adult', -1)"><i class="fa-solid fa-minus"></i></button>
+            <span class="step-value" id="adultCount">1</span>
+            <button class="step-btn plus" onclick="changeCount('adult', 1)"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </div>
+
+        <div class="stepper-card">
+          <div>
+            <span class="stepper-title">Child</span>
+            <small class="stepper-subtext">Aged between 5 and 12 years on day of travel</small>
+          </div>
+          <div class="stepper-control">
+            <button class="step-btn minus" onclick="changeCount('child', -1)"><i class="fa-solid fa-minus"></i></button>
+            <span class="step-value" id="childCount">0</span>
+            <button class="step-btn plus" onclick="changeCount('child', 1)"><i class="fa-solid fa-plus"></i></button>
+          </div>
+        </div>
+
+        <div class="form-group-label">Class</div>
+        <div class="toggle-group-row">
+          <button class="pill-select-btn active" id="classSecond" onclick="setClassType('SECOND')">SECOND</button>
+          <button class="pill-select-btn" id="classFirst" onclick="setClassType('FIRST')">FIRST</button>
+        </div>
+
+        <label class="checkbox-row">
+          <input type="checkbox" id="availConcession">
+          <span>Avail Concession</span>
+        </label>
+      </div>
+
+      <!-- INLINE EDITABLE FARE DOCK -->
+      <div class="bottom-action-dock">
+        <div class="fare-preview-row">
+          <div class="fare-tag">
+            <i class="fa-solid fa-ticket-simple"></i> <span>Fare</span>
+          </div>
+          <div class="fare-right">
+            <span class="rupee-text">₹</span>
+            <!-- Yahan number par direct click karke change kar sakte hain -->
+            <input type="number" id="editableFareValue" class="inline-fare-edit" value="10" min="1" step="1">
+            <span class="fare-breakup-chip">Fare Breakup</span>
+          </div>
+        </div>
+        <button class="btn-primary-blue" onclick="proceedToPayment()">Book Now</button>
+      </div>
+    </section>
+
+    <!-- ==============================================
+         SCREEN 6: MAKE PAYMENT (WRAPPER KE ANDAR LOCKED)
+         ============================================== -->
+    <section class="screen" id="screen-payment">
+      <div class="app-top-header blue-bg">
+        <button class="icon-circle-btn ghost" onclick="handlePaymentBack()"><i class="fa-solid fa-arrow-left"></i></button>
+        <h2>Make Payment</h2>
+      </div>
+
+      <div class="payment-header-strip">
+        <div class="summary-route" id="paymentRouteSnippet">KHAG ➔ CSMT</div>
+        <div class="summary-amount">
+          <div class="amt-headline" id="paymentDueSnippet">Pay ₹ 20</div>
+          <span class="review-link">Review <i class="fa-solid fa-chevron-down"></i></span>
+        </div>
+      </div>
+
+      <div class="scroll-content">
+        <div class="payment-methods-card">
+          <!-- R-Wallet Row -->
+          <div class="pay-method-row" onclick="selectPaymentMethod('wallet')">
+            <div class="pay-left">
+              <div class="irctc-circle-logo"><i class="fa-solid fa-wallet"></i></div>
+              <div class="pay-info">
+                <strong>R-Wallet</strong>
+                <span class="balance-text" id="paymentWalletBalance">₹ 16.65</span>
+              </div>
+            </div>
+            <div class="pay-right">
+              <div class="badge-insufficient" id="insufficientAlert" style="display: none;">Insufficient Balance</div>
+              <button class="link-add-money" onclick="event.stopPropagation(); openAddMoneyModal()">+ Add Money</button>
+            </div>
+          </div>
+
+          <div class="dashed-divider"></div>
+
+          <!-- UPI Row -->
+          <div class="pay-method-row" onclick="selectPaymentMethod('upi')">
+            <div class="pay-left">
+              <div class="upi-logo-box"><span class="upi-symbol">▲</span> UPI</div>
+            </div>
+            <i class="fa-solid fa-chevron-right arrow-icon"></i>
+          </div>
+
+          <div class="dashed-divider"></div>
+
+          <!-- Other Methods -->
+          <div class="pay-method-row" onclick="selectPaymentMethod('cards')">
+            <div class="pay-left">
+              <i class="fa-regular fa-credit-card icon-card"></i>
+              <strong>Other Payment Methods</strong>
+            </div>
+            <i class="fa-solid fa-chevron-right arrow-icon"></i>
+          </div>
+        </div>
+
+        <button class="btn-primary-blue mt-4" id="btnConfirmPay" onclick="executePayment('wallet')">Pay ₹ 20 Now</button>
+      </div>
+    </section>
+
+    <!-- ==============================================
+         SCREEN 7: DYNAMIC TICKET VIEW (5-MIN COUNTDOWN & QR)
+         ============================================== -->
+    <section class="screen" id="screen-ticket-view">
+      <div class="ticket-view-header">
+        <button class="close-ticket-btn" onclick="navigateTo('screen-home')"><i class="fa-solid fa-xmark"></i></button>
+        <div class="ticket-greeting" id="ticketGreetingText">Thank You PRABHAT KUMAR SAW, Happy Journey !</div>
+      </div>
+
+      <div class="scroll-content ticket-scroll-area">
+        <div class="dynamic-dark-card">
+          <div class="ir-watermark-left">INDIAN RAILWAYS</div>
+          <div class="ir-watermark-right">भारतीय रेल</div>
+
+          <div class="dynamic-title">Dynamic preview will close in</div>
+          <div class="digital-countdown-clock" id="dynamicTimerDisplay">04:59</div>
+          
+          <div class="booking-timestamp-lbl">Ticket Booking Date &amp; Time</div>
+          <div class="booking-timestamp-value" id="ticketBookingTime">19 Oct 2026, 13:04</div>
+          <div class="booking-sub-code" id="ticketUtsRef">R17923</div>
+          <div class="non-transferable-note">Ticket is Non-Transferable</div>
+        </div>
+
+        <div class="ticket-meta-card">
+          <div class="meta-row top-status">
+            <div>
+              <span class="meta-label">Journey Ticket</span>
+              <strong class="uts-code-huge" id="ticketUtsCode">X0HHEHB0F8</strong>
+            </div>
+            <span class="status-chip-active">● ACTIVE</span>
+          </div>
+
+          <div class="two-col-grid mt-2">
+            <div>
+              <span class="meta-label">Source</span>
+              <div class="meta-val" id="ticketSourceVal">KHARGHAR</div>
+            </div>
+            <div>
+              <span class="meta-label">Destination</span>
+              <div class="meta-val" id="ticketDestVal">BELAPUR C.B.D</div>
+            </div>
+          </div>
+
+          <div class="two-col-grid mt-2">
+            <div>
+              <span class="meta-label">Distance</span>
+              <div class="meta-val" id="ticketDistanceVal">3 km</div>
+            </div>
+            <div>
+              <span class="meta-label">Passenger</span>
+              <div class="meta-val" id="ticketPassengersVal">1 Adult, 0 Child</div>
+            </div>
+          </div>
+
+          <div class="two-col-grid mt-2">
+            <div>
+              <span class="meta-label">Ticket Type</span>
+              <div class="meta-val" id="ticketTypeVal">JOURNEY</div>
+            </div>
+            <div>
+              <span class="meta-label">Train Types</span>
+              <div class="meta-val" id="ticketTrainVal">ORDINARY</div>
+            </div>
+          </div>
+
+          <div class="two-col-grid mt-2">
+            <div>
+              <span class="meta-label">Class</span>
+              <div class="meta-val" id="ticketClassVal">SECOND</div>
+            </div>
+            <div>
+              <span class="meta-label">Fare</span>
+              <div class="meta-val bold" id="ticketFareVal">₹20.00</div>
+            </div>
+          </div>
+
+          <div class="via-row mt-3">
+            <span>&lt; Via: ------- &gt;</span>
+          </div>
+
+          <div class="gst-ir-row">
+            <span>IR:27AAAGM0289C2ZI</span>
+          </div>
+
+          <div class="validity-alert-text">
+            *Valid for start of journey within 1 hour or until departure of the first train.
+          </div>
+        </div>
+
+        <div class="qr-disclaimer-wrapper">
+          <p class="non-refund-warning">
+            Note: This ticket is non refundable. Ticket is stored locally on the device. Please do not change your handset or perform factory reset.
+          </p>
+
+          <button class="btn-connecting-journey">Book Connecting Journey</button>
+
+          <div class="qr-canvas-holder">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=INDIAN_RAILWAYS_VALID_UTS_TICKET_ACTIVE" alt="Ticket QR Code" class="dynamic-qr-image" id="ticketQrImage">
+          </div>
+
+          <div class="did-you-know-card">
+            <h4>Do you know?</h4>
+            <p>IR recovers only 57% of cost of travel on an average.</p>
+            <p>This ticket is booked on a personal user ID. It's sale/purchase is an offence u/s 143 of the Railways Act, 1989.</p>
+            <p>For enquiry and integrated railway helpline, please dial 139.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================================
+         SCREEN 8: MY BOOKINGS SCREEN
+         ============================================== -->
+    <section class="screen" id="screen-bookings">
+      <div class="app-top-header blue-bg">
+        <button class="icon-circle-btn ghost" onclick="navigateTo('screen-home')"><i class="fa-solid fa-arrow-left"></i></button>
+        <h2>My Bookings</h2>
+        <i class="fa-solid fa-arrow-down-short-wide sort-icon"></i>
+      </div>
+
+      <div class="sub-tab-filter-bar">
+        <button class="filter-tab-btn active" id="filterUpcoming" onclick="filterBookingsTab('Upcoming')">Upcoming (<span id="countUpcoming">0</span>)</button>
+        <button class="filter-tab-btn" id="filterCompleted" onclick="filterBookingsTab('Completed')">Completed (<span id="countCompleted">3</span>)</button>
+        <button class="filter-tab-btn" id="filterCancelled" onclick="filterBookingsTab('Cancelled')">Cancelled (0)</button>
+        <button class="filter-tab-btn" id="filterAll" onclick="filterBookingsTab('All')">All</button>
+      </div>
+
+      <div class="scroll-content" id="bookingsTicketList"></div>
+    </section>
+
+    <!-- ==============================================
+         SCREEN 9: PROFILE / "YOU" SCREEN
+         ============================================== -->
+    <section class="screen" id="screen-you">
+      <div class="you-top-avatar-area">
+        <div class="profile-big-circle"><i class="fa-solid fa-user"></i></div>
+        <h3 class="profile-name-text" id="youProfileName">PRABHAT KUMAR SAW</h3>
+        <div class="profile-actions-row">
+          <span onclick="openEditDetailsModal()"><i class="fa-regular fa-eye"></i> View Details</span>
+          <span class="sep">|</span>
+          <span onclick="openEditDetailsModal()"><i class="fa-solid fa-pen"></i> Edit Details</span>
+        </div>
+      </div>
+
+      <div class="scroll-content">
+        <div class="you-wallet-card">
+          <div class="wallet-left">
+            <div class="green-wallet-icon"><i class="fa-solid fa-wallet"></i></div>
+            <div>
+              <span class="lbl-wallet">R-Wallet</span>
+              <strong class="amt-wallet" id="youWalletDisplay">₹ 16.65</strong>
+            </div>
+          </div>
+          <div class="wallet-right">
+            <i class="fa-solid fa-rotate sync-icon" onclick="syncWallet()"></i>
+            <button class="btn-add-primary" onclick="openAddMoneyModal()">Add</button>
+          </div>
+        </div>
+
+        <div class="profile-complete-card">
+          <div class="prog-label-row">
+            <span>Profile Complete</span>
+            <strong>100%</strong>
+          </div>
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill" style="width: 100%;"></div>
+          </div>
+        </div>
+
+        <div class="saved-passenger-card">
+          <div class="saved-pass-header">
+            <div>
+              <strong>Saved Passengers</strong>
+              <small>Add/Edit Passenger info</small>
+            </div>
+            <button class="btn-pill-orange">Add</button>
+          </div>
+          <div class="pass-detail-item">
+            <div class="pass-avatar"><i class="fa-solid fa-user"></i></div>
+            <div class="pass-body">
+              <div class="name-line">
+                <span id="savedPassName">Prabhat Kumar Saw</span>
+                <span class="veg-indicator-box"><span class="veg-dot"></span></span>
+              </div>
+              <small class="pass-meta" id="savedPassDetails">18 Y, M, NC | Veg <i class="fa-solid fa-circle-check veg-check"></i></small>
+            </div>
+            <div class="pass-action-icons">
+              <i class="fa-regular fa-pen-to-square" onclick="openEditDetailsModal()"></i>
+              <i class="fa-regular fa-trash-can"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="you-tiles-grid">
+          <div class="you-tile-item"><i class="fa-solid fa-lock"></i><span>Change Password</span></div>
+          <div class="you-tile-item"><i class="fa-solid fa-address-card"></i><span>My Account</span></div>
+          <div class="you-tile-item">
+            <div class="toggle-pill-on">On <span class="bullet"></span></div>
+            <span>Biometric</span>
+          </div>
+          <div class="you-tile-item"><i class="fa-solid fa-ticket-simple"></i><span>Transfer Ticket</span></div>
+          <div class="you-tile-item"><i class="fa-solid fa-clock-rotate-left"></i><span>My Transaction</span></div>
+          <div class="you-tile-item"><i class="fa-solid fa-id-card-clip"></i><span>DeLink Aadhar</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================================
+         SIDE DRAWER MENU
+         ============================================== -->
+    <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+    <aside class="side-drawer" id="sideDrawer">
+      <div class="drawer-user-header">
+        <div class="drawer-avatar"><i class="fa-solid fa-user"></i></div>
+        <h4 id="drawerUserName">PRABHAT KUMAR SAW</h4>
+      </div>
+
+      <div class="drawer-wallet-card">
+        <div class="d-wallet-info">
+          <i class="fa-solid fa-wallet"></i>
+          <div>
+            <span>R-Wallet</span>
+            <strong id="drawerWalletDisplay">₹ 16.65</strong>
+          </div>
+        </div>
+        <button class="btn-primary-blue-sm" onclick="closeDrawer(); openAddMoneyModal()">Add Money</button>
+      </div>
+
+      <nav class="drawer-menu-list">
+        <a href="javascript:void(0)" class="drawer-item"><i class="fa-solid fa-table-cells"></i><span>Show/Hide Services</span></a>
+        <a href="javascript:void(0)" class="drawer-item"><i class="fa-regular fa-message"></i><span>FAQs</span></a>
+        <a href="javascript:void(0)" class="drawer-item"><i class="fa-solid fa-headset"></i><span>Help &amp; Support</span></a>
+        <a href="javascript:void(0)" class="drawer-item"><i class="fa-regular fa-star"></i><span>Reserved Services - Counter</span></a>
+        <a href="javascript:void(0)" class="drawer-item"><i class="fa-solid fa-circle-info"></i><span>About</span></a>
+        <a href="javascript:void(0)" class="drawer-item"><i class="fa-regular fa-thumbs-up"></i><span>Rate Us</span></a>
+        <a href="javascript:void(0)" class="drawer-item"><i class="fa-solid fa-share-nodes"></i><span>Share</span></a>
+      </nav>
+
+      <div class="drawer-footer">
+        <button class="logout-btn" onclick="resetAppData()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Log Out / Reset</button>
+        <div class="version-tag">V-2.1.66-237</div>
+      </div>
+    </aside>
+
+    <!-- ==============================================
+         BOTTOM NAVIGATION BAR
+         ============================================== -->
+    <nav class="bottom-nav-bar" id="bottomNavBar">
+      <button class="nav-item active" id="nav-home" onclick="navigateTo('screen-home')">
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+      </button>
+      <button class="nav-item" id="nav-bookings" onclick="navigateTo('screen-bookings')">
+        <i class="fa-solid fa-ticket"></i>
+        <span>My Bookings</span>
+      </button>
+      <button class="nav-item" id="nav-you" onclick="navigateTo('screen-you')">
+        <i class="fa-solid fa-user"></i>
+        <span>You</span>
+      </button>
+      <button class="nav-item" id="nav-menu" onclick="openDrawer()">
+        <i class="fa-solid fa-bars"></i>
+        <span>Menu</span>
+      </button>
+    </nav>
+
+    <!-- ==============================================
+         MODAL 1: ONBOARDING / USER DETAILS SETUP
+         ============================================== -->
+    <div class="modal-backdrop" id="modalOnboarding">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>Welcome to RailOne</h3>
+          <p>Please enter your details once. They will be saved permanently and can be edited anytime.</p>
+        </div>
+        <form id="onboardingForm" onsubmit="saveUserDetails(event)">
+          <div class="input-field">
+            <label>Full Name</label>
+            <input type="text" id="setupFullName" placeholder="e.g. PRABHAT KUMAR SAW" required>
+          </div>
+          <div class="form-row-2">
+            <div class="input-field">
+              <label>Age</label>
+              <input type="number" id="setupAge" min="5" max="110" placeholder="18" required>
+            </div>
+            <div class="input-field">
+              <label>Gender</label>
+              <select id="setupGender">
+                <option value="M">Male (M)</option>
+                <option value="F">Female (F)</option>
+                <option value="O">Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="input-field">
+            <label>Starting Wallet Balance (₹)</label>
+            <input type="number" id="setupInitialWallet" min="0" step="0.01" value="16.65" placeholder="16.65">
+          </div>
+          <button type="submit" class="btn-primary-blue mt-3">Save &amp; Continue</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ==============================================
+         MODAL 2: ADD MONEY TO WALLET
+         ============================================== -->
+    <div class="modal-backdrop" id="modalAddMoney">
+      <div class="modal-card">
+        <div class="modal-header flex-between">
+          <h3>Add Money to R-Wallet</h3>
+          <button class="close-icon-btn" onclick="closeAddMoneyModal()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <p class="sub-muted">Current Balance: <b id="modalCurrentWalletBal">₹ 16.65</b></p>
+        
+        <div class="wallet-amount-input-box">
+          <span class="rupee-symbol">₹</span>
+          <input type="number" id="addMoneyAmount" placeholder="e.g. 50" min="10">
+        </div>
+
+        <div class="quick-chip-row">
+          <button type="button" class="quick-amt-chip" onclick="setQuickAdd(50)">+ ₹50</button>
+          <button type="button" class="quick-amt-chip" onclick="setQuickAdd(100)">+ ₹100</button>
+          <button type="button" class="quick-amt-chip" onclick="setQuickAdd(200)">+ ₹200</button>
+          <button type="button" class="quick-amt-chip" onclick="setQuickAdd(500)">+ ₹500</button>
+        </div>
+
+        <button class="btn-primary-blue mt-4" onclick="confirmAddMoney()">Add Money</button>
+      </div>
+    </div>
+
+  </div>
+  <!-- MOBILE DEVICE FRAME WRAPPER END -->
+
+  <script src="app.js"></script>
+</body>
+</html>
